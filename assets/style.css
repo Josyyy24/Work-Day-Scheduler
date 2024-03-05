@@ -10,6 +10,7 @@ body {
     color: #000000;
     border-left: 1px solid black;
     padding: 10px;
+    text-align: center;
   }
   
   .description {
@@ -18,10 +19,12 @@ body {
   
   .time-block {
     border-radius: 15px;
+    text-align: center;
   }
   
   .row {
     border-top: 1px solid white;
+    white-space: pre-wrap;
   }
   
   .hour {
