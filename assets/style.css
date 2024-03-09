@@ -1,3 +1,5 @@
+/*Third-Party APIs: Work Day Scheduler*/
+
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
@@ -8,9 +10,8 @@ body {
     border: none;
     resize: none;
     color: #000000;
-    border-left: 1px solid black;
+    border-left: 1px solid #000000;
     padding: 10px;
-    text-align: center;
   }
   
   .description {
@@ -19,16 +20,14 @@ body {
   
   .time-block {
     border-radius: 15px;
-    text-align: center;
   }
   
   .row {
     border-top: 1px solid white;
-    white-space: pre-wrap;
   }
   
   .hour {
-    background-color: #ffffff;
+    background-color: #cac7d4;
     color: #000000;
     border-top: 1px dashed #000000;
   }
