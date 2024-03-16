@@ -25,6 +25,3 @@ WHEN I click the save button for that time block
 THEN the text for that event is saved in local storage
 WHEN I refresh the page
 THEN the saved events persist
-
-## Mock-Up:
-<img src="C:\Users\nunoj\bootcamp\WorkDayScheduler\Work-Day-Scheduler\assets\webpagepreview.png" alt=webpage 
