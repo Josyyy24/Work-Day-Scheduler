@@ -1,65 +1,129 @@
-//HTML and CSS load first before running code
-//The code will run until after the browser has finished rendering all the elements
-const localeSettings = {};
-dayjs.locale(localeSettings);
-//Then you'll wait until the DOM is fully loaded before executing the code inside the function
-$(function () {
+//HTML and CSS will load first 
+$(document).ready(function () {
 
-  //This function gets the current hour of the day
-  const currentHour = dayjs().format(`H`);
+//Variable for the current day
+var today = dayjs().format(`dddd, MMMM D`);
+$(`#currentDay`).text(today);
 
- //This function changes the color of each block when it's either "past, present, or future"
- function hourlyColor()  {
-  $(`time-block`).each(function) {
-    const blockHour = parseInt(this.id);
-    $(this).toggleClass(`past`, blockHour < currentHour);
-    $(this).toggleClass(`present`, blockHour === currentHour);
-    $(this).toggleClass(`future`, blockHour > currentHour);
-  });
- }
+//Sets present hour variable as an integer
+var presenthour = parseInt(dayjs().format(`H`), 10);
 
- //This function will save the user's input in a textarea to localStorage
- function textEntry() {
-  $(`.saveBtn`).on(`click`, function) {
-    const key = $(this).parent().attr(`id`);
-    const value = $(this).siblings(`.description`).val();
-    localStorage.setItem(key, value);
-  });
- }
- //This function will refresh the color of each time block on whether it's in the past, present, or future
- function refreshColor() {
-  $(`.time-block`).each(function() {
-    const blockHour = parseInt(this.id);
-    if (blockHour == currentHour) {
-      $(this).removeClass(`past future`).addClass(`present`);
-    } else if (blockHour < currentHour) {
-      $(this).removeClass(`future present`).addClass(`past`);
-    } else {
-      $(this).removeClass(`past present`).addClass(`future`);
+//This is for the saveBtn click listener
+$(".saveBtn").on("click", function () {
+  
+//Retrieves values from id attribute
+var hour = $(this).parent().attr("id");
+var event = $(this).siblings(".description").val();
+  
+localStorage.setItem(hour, event)
+});
+
+//This function is for the clear button
+let clearButton = document.getElementById("clearBtn");
+clearButton.addEventListener("click", function() {
+  localStorage.clear()
+  window.location.reload()
+});
+
+//This function ensures that the current time frames are colored accordingly
+function timeSto() {
+$(`.time-block`).each(function () {
+
+//Sets timeframe as an integer
+var timeframe = parseInt(this.id.split(`-`)[1], 10);
+
+if (presenthour > timeframe) {
+$(this).addClass(`past`).removeClass(`present`);
+} else if (presenthour === timeframe) {
+$(this).addClass(`present`).removeClass(`past future`);
+} else if (presenthour < timeframe) {
+$(this).addClass(`future`).removeClass(`present past`); }
+});
+};
+
+//Loops over set values
+for (var hour = 9; hour <= 17; hour++) {
+$(`#hour-` + hour + ` .description`).val(localStorage.getItem(`hour-` + hour));
+};
+
+timeSto();
+
+//This converts the AM to PM time
+function displayAmorPm(hour) {
+  var b = ""
+  if (hour <= 12) {
+    b = "AM"
+  } else {
+    b ="PM" 
+  }
+  hour = hour % 12
+  hour = hour ? hour : 12
+  return hour + " " + b 
+  }
+});
+
+function getlocalStorage(hour) {
+  let inputval = localStorage.getItem(hour)
+  if (true) {
+    $("input").data(`input${hour}`)
+    var text = $(`input#inputText${hour}`).val(inputval)
+    console.log(text)
+  }
+}
+
+//This function updates the color
+function updateColor() {
+  var hour = new Date().getHours();
+  for (var i =9; i <=17; i++) {
+    console.log(hour, i)
+    if (hour == i) {
+      $(`#inputText${i}`).css("background", "red")
+    } else if (hour < i) {
+      $(`#inputText${i}`).css("background", "lightgreen")
+    } else if (hour > i) {
+      $(`inputText${i}`).css("background", "grey")
     }
-  });
-}
+    }
+    }
 
-//This gets the user input from the localStorage
-$(`.time-block`).each(function) {
-  const key = $(this).attr(`id`);
-  const value = localStorage.getItem(key);
-  $(this).children(`.description`).val(value);
-});
+    setInterval(function () {
+      updateColor()
+    }, 1000);
+    
+//This creates the row elements
+row = $(`<div class="row">`)
+col1 = $(`<div class = "col-lg-2 hour">${displayAmorPm(i)}</div>`)
+col2 = $(`<div class = "col-lg-8 inputcontent"><input data-input="${i}" id="inputText${i}" class="form-control inputText" type="text name="userInput"></div>`)
+col3 = $(`<div class ="col-lg-2"><button data-id="${i}" id="savePlanner" class="btn btn-success btn-block"><i class="fas fa-save"></i> Save</button></div>`)
+row.append(col1)
+row.append(col2)
+row.append(col3)
+$("#display-planner").append(row)
+getlocalStorage(i) 
 
-function updateTime() {
-  const dateElement = $(`#date`);
-  const timeElement = $(`#time`);
-  const currentDate = dayjs().format(`dddd, MMMM D, YYYY`);
-  const currentTime = dayjs().format(`hh:mm:ss A`);
-  dateElement.text(currentDate);
-  timeElement.text(currentTime);
-}
+  //This checks the time and adds the classes for background indicators
+  if (blockTime < timeNow) {
+    $(this).removeClass("future");
+    $(this).removeClass("present");
+    $(this).addClass("past");
+  }
+  else if (blockTime === timeNow) {
+    $(this).removeClass("past");
+    $(this).removeClass("future");
+    $(this).addClass("present");
+  }
+  else {
+    $(this).removeClass("present");
+    $(this).removeClass("past");
+    $(this).addClass("future");
+  }
 
-//Main three functions
-hourlyColor();
-textEntry();
-refreshColor();
-
-setInterval(updateTime, 1000);
-});
+  $("#9hour .description").val(localStorage.getItem("9hour"));
+  $("#10hour .description").val(localStorage.getItem("10hour"));
+  $("#11hour .description").val(localStorage.getItem("11hour"));
+  $("#12hour .description").val(localStorage.getItem("12hour"));
+  $("#1hour .description").val(localStorage.getItem("1hour"));
+  $("#2hour .description").val(localStorage.getItem("2hour"));
+  $("#3hour .description").val(localStorage.getItem("3hour"));
+  $("#4hour .description").val(localStorage.getItem("4hour"));
+  $("#5hour .description").val(localStorage.getItem("5hour")); 
