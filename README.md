@@ -4,4 +4,3 @@ This is a simple calendar application that allows a user to save events for each
 The additional resources I used were: MDN Web Docs, DayJs, Google fonts, and Bootstrap.
 
 Webpage Preview
-![alt text](<Screenshot (4).png>)
